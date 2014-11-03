@@ -111,7 +111,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
         Matrix.setIdentityM(mModelMatrix, 0); // initialize to identity matrix
         Matrix.translateM(mModelMatrix, 0, mX, mY, 0); // translation to the left
-        Matrix.setRotateM(mRotationMatrix, 0, angle, 0, 1f, -1.0f);
+        Matrix.setRotateM(mRotationMatrix, 0, angle, 0,0f, -1f);
 
         mTempMatrix = mModelMatrix.clone();
         Matrix.multiplyMM(mModelMatrix, 0, mTempMatrix, 0, mRotationMatrix, 0);
