@@ -56,6 +56,22 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     private float mX;
     private float mY;
 
+    private float[] colortop = {1.00f, 1.00f, 1.00f };
+    private float [] colormiddle = {1.000f, 0.271f, 0f};
+
+    private float[] coordT = {
+            // in counterclockwise order:
+            0.0f,  0.622008459f, 0.0f,   // top
+            -0.1657f, 0.3104f, 0.0f,   // bottom left
+            0.1657f, 0.3104f, 0.0f    // bottom right
+    };
+    private float[] coordM = {
+            // in counterclockwise order:
+            0.0f,  0.622008459f, 0.0f,   // top
+            -0.3314f, -0.00119154f, 0.0f,   // bottom left
+            0.3314f, -0.00119154f, 0.0f    // bottom right
+    };
+
     @Override
     public void onSurfaceCreated(GL10 unused, EGLConfig config) {
 
@@ -63,6 +79,8 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
         mTriangle = new Triangle();
+        mTrianglemiddle = new Triangle(coordM,colormiddle);
+        mTriangletop = new Triangle(coordT,colortop);
         mSquare   = new Square();
     }
 
@@ -101,7 +119,8 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         mTempMatrix = mMVPMatrix.clone();
         Matrix.multiplyMM(mMVPMatrix, 0, mTempMatrix, 0, mModelMatrix, 0);
 
-        //float Time = System.currentTimeMillis() * 0.01f;  // 10 radians / second == fast!
+
+        float Time = System.currentTimeMillis() * 0.01f;  // 10 radians / second == fast!
 
 
         // Combine the rotation matrix with the projection and camera view
@@ -113,6 +132,8 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
         // Draw triangle
         mTriangle.draw(mMVPMatrix);
+        mTrianglemiddle.draw(mMVPMatrix);
+        mTriangletop.draw(mMVPMatrix);
     }
 
     @Override
