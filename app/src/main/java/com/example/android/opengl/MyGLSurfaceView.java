@@ -68,6 +68,9 @@ public class MyGLSurfaceView extends GLSurfaceView {
                 mRenderer.setY(mRenderer.getmY() - dy/1000);
 
                 requestRender();
+
+            case MotionEvent.ACTION_DOWN:
+                Log.w("hi","hi");
         }
 
         mPreviousX = x;
