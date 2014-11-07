@@ -42,8 +42,13 @@
       <file leaf-file-name="MyGLSurfaceView.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/android/opengl/MyGLSurfaceView.java">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
             <state vertical-scroll-proportion="0.8427835" vertical-offset="608" max-vertical-offset="1190">
               <caret line="72" column="33" selection-start-line="72" selection-start-column="33" selection-end-line="72" selection-end-column="33" />
+=======
+            <state vertical-scroll-proportion="0.6159794" vertical-offset="645" max-vertical-offset="1139">
+              <caret line="69" column="32" selection-start-line="69" selection-start-column="32" selection-end-line="69" selection-end-column="32" />
+>>>>>>> ftest2
               <folding />
             </state>
           </provider>
@@ -1654,8 +1659,13 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/android/opengl/MyGLSurfaceView.java">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state vertical-scroll-proportion="0.8427835" vertical-offset="608" max-vertical-offset="1190">
           <caret line="72" column="33" selection-start-line="72" selection-start-column="33" selection-end-line="72" selection-end-column="33" />
+=======
+        <state vertical-scroll-proportion="0.6159794" vertical-offset="645" max-vertical-offset="1139">
+          <caret line="69" column="32" selection-start-line="69" selection-start-column="32" selection-end-line="69" selection-end-column="32" />
+>>>>>>> ftest2
           <folding />
         </state>
       </provider>
