@@ -2,10 +2,10 @@
 <merger version="2" >
 
     <dataSet config="main" >
-        <source path="/users/ugrad/sopermaf/AndroidStudioProjects/TriangleMove/app/src/main/assets" />
+        <source path="C:\Users\Owner\halloween\app\src\main\assets" />
     </dataSet>
     <dataSet config="debug" >
-        <source path="/users/ugrad/sopermaf/AndroidStudioProjects/TriangleMove/app/src/debug/assets" />
+        <source path="C:\Users\Owner\halloween\app\src\debug\assets" />
     </dataSet>
 
 </merger>
