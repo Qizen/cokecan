@@ -40,6 +40,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     private Triangle mTrianglemiddle;
     private Triangle mTriangletop;
     private Square   mSquare;
+    private Circle   mCircle;
 
     // mMVPMatrix is an abbreviation for "Model View Projection Matrix"
     private final float[] mMVPMatrix = new float[16];
@@ -56,7 +57,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     private float mX;
     private float mY;
 
-    private float[] colortop = {1.00f, 1.00f, 1.00f };
+  /*  private float[] colortop = {1.00f, 1.00f, 1.00f };
     private float [] colormiddle = {1.000f, 0.271f, 0f};
 
     private float[] coordT = {
@@ -70,7 +71,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
             0.0f,  0.622008459f, 0.0f,   // top
             -0.3314f, -0.00119154f, 0.0f,   // bottom left
             0.3314f, -0.00119154f, 0.0f    // bottom right
-    };
+    };*/
 
     @Override
     public void onSurfaceCreated(GL10 unused, EGLConfig config) {
@@ -78,10 +79,11 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         // Set the background frame color
         GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
-        mTriangle = new Triangle();
+      /*  mTriangle = new Triangle();
         mTrianglemiddle = new Triangle(coordM,colormiddle);
-        mTriangletop = new Triangle(coordT,colortop);
+        mTriangletop = new Triangle(coordT,colortop);*/
         mSquare   = new Square();
+        mCircle = new Circle();
     }
 
     @Override
@@ -99,28 +101,25 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mViewMatrix, 0);
 
         // Draw square
-        mSquare.draw(mMVPMatrix);
+      //  mSquare.draw(mMVPMatrix);
 
         // Create a rotation for the triangle
 
         // Use the following code to generate constant rotation.
         // Leave this code out when using TouchEvents.
-         long time = SystemClock.uptimeMillis() % 4000L;
-         float angle = 0.090f * ((int) time);
+        /* long time = SystemClock.uptimeMillis() % 4000L;
+         float angle = 0.090f * ((int) time);*/
 
 
         Matrix.setIdentityM(mModelMatrix, 0); // initialize to identity matrix
         Matrix.translateM(mModelMatrix, 0, mX, mY, 0); // translation to the left
-        Matrix.setRotateM(mRotationMatrix, 0, angle, 0,0f, -1f);
+        Matrix.setRotateM(mRotationMatrix, 0, 0.0f, 0,0f, -1f);
 
         mTempMatrix = mModelMatrix.clone();
         Matrix.multiplyMM(mModelMatrix, 0, mTempMatrix, 0, mRotationMatrix, 0);
+        mCircle.draw(mMVPMatrix);
 
-        mTempMatrix = mMVPMatrix.clone();
-        Matrix.multiplyMM(mMVPMatrix, 0, mTempMatrix, 0, mModelMatrix, 0);
-
-
-        float Time = System.currentTimeMillis() * 0.01f;  // 10 radians / second == fast!
+       // float Time = System.currentTimeMillis() * 0.01f;  // 10 radians / second == fast!
 
 
         // Combine the rotation matrix with the projection and camera view
@@ -131,9 +130,9 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
        // Matrix.multiplyMM(scratch,0,mViewMatrix,0,mProjectionMatrix,0);
 
         // Draw triangle
-        mTriangle.draw(mMVPMatrix);
+       /* mTriangle.draw(mMVPMatrix);
         mTrianglemiddle.draw(mMVPMatrix);
-        mTriangletop.draw(mMVPMatrix);
+        mTriangletop.draw(mMVPMatrix);*/
     }
 
     @Override
