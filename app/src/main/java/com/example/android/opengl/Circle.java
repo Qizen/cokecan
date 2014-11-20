@@ -54,5 +54,4 @@ public class Circle {
         for(int i=0; i < numT; i++)             //draw each triangle
             myTriangles[i].draw(mMVPmatrix);
     }
-
 }
