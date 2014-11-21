@@ -168,6 +168,9 @@ public class Triangle {
      * this shape.
      */
     public void draw(float[] mvpMatrix) {
+
+        Log.w("called tri draw", "triangle");
+
         // Add program to OpenGL environment
         GLES20.glUseProgram(mProgram);
 

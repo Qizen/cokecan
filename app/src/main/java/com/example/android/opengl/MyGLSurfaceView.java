@@ -66,7 +66,7 @@ public class MyGLSurfaceView extends GLSurfaceView {
 
                 mRenderer.setX(mRenderer.getmX() - dx/1000);
                 mRenderer.setY(mRenderer.getmY() - dy/1000);
-
+                Log.w("action: ", "i tried to move");
                 requestRender();
         }
 

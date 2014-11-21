@@ -20,7 +20,8 @@ public class Cylinder {
         float x1,x2,y1,y2;
         Circle1 = new Triangle[numT];
         Circle2 = new Triangle[numT];
-        Cbody   = new Square[numT];
+        Cbody = new Square[numT];
+        float color[] = new float[] {0.3f, 0.5f, 0.44f, 0.11f};
 
 
         x1 = radius;
@@ -38,13 +39,13 @@ public class Cylinder {
                     x2, y2, 0.0f            //point 2
             };
 
-            // tempT = new Triangle(coords);
-            Circle1[x] = new Triangle(Tcoords);             //puts the initial coords in the triagle
+                Circle1[x] = new Triangle(Tcoords,color);             //puts the initial coords in the triagle
+
 
             //change z coords
             Tcoords[2] = 0.5f;
-            Tcoords[5] = 0.5f;
-            Tcoords[7] = 0.5f;
+            Tcoords[5] = 1.0f;
+            Tcoords[8] = 1.0f;
 
             Circle2[x] = new Triangle(Tcoords);
 
@@ -72,7 +73,7 @@ public class Cylinder {
         {
             Circle1[i].draw(mMVPmatrix);
             Circle2[i].draw(mMVPmatrix);
-            Cbody[i].draw(mMVPmatrix);
+            //Cbody[i].draw(mMVPmatrix);
         }
     }
 }

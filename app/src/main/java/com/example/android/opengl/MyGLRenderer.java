@@ -41,6 +41,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     private Triangle mTriangletop;
     private Square   mSquare;
     private Circle   mCircle;
+    private Cylinder mCylinder;
 
     // mMVPMatrix is an abbreviation for "Model View Projection Matrix"
     private final float[] mMVPMatrix = new float[16];
@@ -84,6 +85,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         mTriangletop = new Triangle(coordT,colortop);*/
         mSquare   = new Square();
         mCircle = new Circle();
+        mCylinder = new Cylinder();
     }
 
     @Override
@@ -95,13 +97,13 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
 
         // Set the camera position (View matrix)
-        Matrix.setLookAtM(mViewMatrix, 0, 0, 0, -3, 0f, 0f, 0f, 0f, 1.0f, 0.0f);
+        Matrix.setLookAtM(mViewMatrix, 0, 0,0, -3, 0.0f, 0.0f, 0f, 0f, 1.0f, 0.0f);
 
         // Calculate the projection and view transformation
         Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mViewMatrix, 0);
 
         // Draw square
-      //  mSquare.draw(mMVPMatrix);
+        // mSquare.draw(mMVPMatrix);
 
         // Create a rotation for the triangle
 
@@ -117,8 +119,8 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
         mTempMatrix = mModelMatrix.clone();
         Matrix.multiplyMM(mModelMatrix, 0, mTempMatrix, 0, mRotationMatrix, 0);
-        mCircle.draw(mMVPMatrix);
-
+       // mCircle.draw(mMVPMatrix);
+        mCylinder.draw(mMVPMatrix);
        // float Time = System.currentTimeMillis() * 0.01f;  // 10 radians / second == fast!
 
 

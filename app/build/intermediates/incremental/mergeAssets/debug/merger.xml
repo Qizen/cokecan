@@ -2,10 +2,10 @@
 <merger version="2" >
 
     <dataSet config="main" >
-        <source path="C:\Users\Owner\halloween\app\src\main\assets" />
+        <source path="/users/ugrad/sopermaf/halloween/app/src/main/assets" />
     </dataSet>
     <dataSet config="debug" >
-        <source path="C:\Users\Owner\halloween\app\src\debug\assets" />
+        <source path="/users/ugrad/sopermaf/halloween/app/src/debug/assets" />
     </dataSet>
 
 </merger>
