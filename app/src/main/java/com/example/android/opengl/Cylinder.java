@@ -43,7 +43,7 @@ public class Cylinder {
 
 
             //change z coords
-            Tcoords[2] = 0.5f;
+            Tcoords[2] = 1.0f;
             Tcoords[5] = 1.0f;
             Tcoords[8] = 1.0f;
 
@@ -72,7 +72,7 @@ public class Cylinder {
         for(int i=0; i < numT; i++)             //draw each triangle
         {
             Circle1[i].draw(mMVPmatrix);
-            Circle2[i].draw(mMVPmatrix);
+           // Circle2[i].draw(mMVPmatrix);
             //Cbody[i].draw(mMVPmatrix);
         }
     }

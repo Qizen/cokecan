@@ -40,7 +40,6 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     private Triangle mTrianglemiddle;
     private Triangle mTriangletop;
     private Square   mSquare;
-    private Circle   mCircle;
     private Cylinder mCylinder;
 
     // mMVPMatrix is an abbreviation for "Model View Projection Matrix"
@@ -58,7 +57,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     private float mX;
     private float mY;
 
-  /*  private float[] colortop = {1.00f, 1.00f, 1.00f };
+    private float[] colortop = {1.00f, 1.00f, 1.00f };
     private float [] colormiddle = {1.000f, 0.271f, 0f};
 
     private float[] coordT = {
@@ -72,7 +71,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
             0.0f,  0.622008459f, 0.0f,   // top
             -0.3314f, -0.00119154f, 0.0f,   // bottom left
             0.3314f, -0.00119154f, 0.0f    // bottom right
-    };*/
+    };
 
     @Override
     public void onSurfaceCreated(GL10 unused, EGLConfig config) {
@@ -80,11 +79,10 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         // Set the background frame color
         GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
-      /*  mTriangle = new Triangle();
+        mTriangle = new Triangle();
         mTrianglemiddle = new Triangle(coordM,colormiddle);
-        mTriangletop = new Triangle(coordT,colortop);*/
+        mTriangletop = new Triangle(coordT,colortop);
         mSquare   = new Square();
-        mCircle = new Circle();
         mCylinder = new Cylinder();
     }
 
@@ -97,42 +95,47 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
 
         // Set the camera position (View matrix)
-        Matrix.setLookAtM(mViewMatrix, 0, 0,0, -3, 0.0f, 0.0f, 0f, 0f, 1.0f, 0.0f);
+        Matrix.setLookAtM(mViewMatrix, 0, 0, 0, -3, 0f, 0f, 0f, 0f, 1.0f, 0.0f);
 
         // Calculate the projection and view transformation
         Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mViewMatrix, 0);
 
         // Draw square
-        // mSquare.draw(mMVPMatrix);
+        //mSquare.draw(mMVPMatrix);
 
         // Create a rotation for the triangle
 
         // Use the following code to generate constant rotation.
         // Leave this code out when using TouchEvents.
-        /* long time = SystemClock.uptimeMillis() % 4000L;
-         float angle = 0.090f * ((int) time);*/
+        long time = SystemClock.uptimeMillis() % 4000L;
+        float angle = 0.090f * ((int) time);
 
 
         Matrix.setIdentityM(mModelMatrix, 0); // initialize to identity matrix
         Matrix.translateM(mModelMatrix, 0, mX, mY, 0); // translation to the left
-        Matrix.setRotateM(mRotationMatrix, 0, 0.0f, 0,0f, -1f);
+        Matrix.setRotateM(mRotationMatrix, 0, 0, angle, 0.0f, -1.0f);
 
         mTempMatrix = mModelMatrix.clone();
         Matrix.multiplyMM(mModelMatrix, 0, mTempMatrix, 0, mRotationMatrix, 0);
-       // mCircle.draw(mMVPMatrix);
+
+        mTempMatrix = mMVPMatrix.clone();
+        Matrix.multiplyMM(mMVPMatrix, 0, mTempMatrix, 0, mModelMatrix, 0);
+
         mCylinder.draw(mMVPMatrix);
-       // float Time = System.currentTimeMillis() * 0.01f;  // 10 radians / second == fast!
+
+
+        float Time = System.currentTimeMillis() * 0.01f;  // 10 radians / second == fast!
 
 
         // Combine the rotation matrix with the projection and camera view
         // Note that the mMVPMatrix factor *must be first* in order
         // for the matrix multiplication product to be correct.
-       // Matrix.multiplyMM(scratch, 0, mMVPMatrix, 0, mRotationMatrix, 0);
+        // Matrix.multiplyMM(scratch, 0, mMVPMatrix, 0, mRotationMatrix, 0);
 
-       // Matrix.multiplyMM(scratch,0,mViewMatrix,0,mProjectionMatrix,0);
+        // Matrix.multiplyMM(scratch,0,mViewMatrix,0,mProjectionMatrix,0);
 
         // Draw triangle
-       /* mTriangle.draw(mMVPMatrix);
+        /*mTriangle.draw(mMVPMatrix);
         mTrianglemiddle.draw(mMVPMatrix);
         mTriangletop.draw(mMVPMatrix);*/
     }
@@ -175,17 +178,17 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     }
 
     /**
-    * Utility method for debugging OpenGL calls. Provide the name of the call
-    * just after making it:
-    *
-    * <pre>
-    * mColorHandle = GLES20.glGetUniformLocation(mProgram, "vColor");
-    * MyGLRenderer.checkGlError("glGetUniformLocation");</pre>
-    *
-    * If the operation is not successful, the check throws an error.
-    *
-    * @param glOperation - Name of the OpenGL call to check.
-    */
+     * Utility method for debugging OpenGL calls. Provide the name of the call
+     * just after making it:
+     *
+     * <pre>
+     * mColorHandle = GLES20.glGetUniformLocation(mProgram, "vColor");
+     * MyGLRenderer.checkGlError("glGetUniformLocation");</pre>
+     *
+     * If the operation is not successful, the check throws an error.
+     *
+     * @param glOperation - Name of the OpenGL call to check.
+     */
     public static void checkGlError(String glOperation) {
         int error;
         while ((error = GLES20.glGetError()) != GLES20.GL_NO_ERROR) {
