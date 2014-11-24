@@ -8,10 +8,12 @@ import android.util.Log;
 public class Cylinder {
 
     public final int numT = 40;          //defines number of triangles being drawn
+    public final int numsqT = numT * 2;  //need 2 triangles for body where every
     Triangle Circle1 [], Circle2 [];
-    Square  Cbody[];
+    Triangle  Cbody[];
     private double mAngle = (2.0*Math.PI)/numT;
     private float radius = 0.5f;
+    private float z_offset = 1.0f;
 
     public Cylinder(){            //give the triangles that make circle their coordinates
 
@@ -20,7 +22,7 @@ public class Cylinder {
         float x1,x2,y1,y2;
         Circle1 = new Triangle[numT];
         Circle2 = new Triangle[numT];
-        Cbody = new Square[numT];
+        Cbody = new Triangle[numsqT];
         float color[] = new float[] {0.3f, 0.5f, 0.44f, 0.11f};
 
 
@@ -40,23 +42,45 @@ public class Cylinder {
             };
 
                 Circle1[x] = new Triangle(Tcoords,color);             //puts the initial coords in the triagle
-
+            Circle1[x] = new Triangle(Tcoords);
 
             //change z coords
-            Tcoords[2] = 1.0f;
-            Tcoords[5] = 1.0f;
-            Tcoords[8] = 1.0f;
+            Tcoords[2] = z_offset;
+            Tcoords[5] = z_offset;
+            Tcoords[8] = z_offset;
 
             Circle2[x] = new Triangle(Tcoords);
 
-            //get the body of the cylinder coords
-            SqCoords = new float[]{
-                    x1, y1, 0.0f,   // circle 1 connection
-                    x2, y2, 0.0f,
-                    x1, y1, Tcoords[2],   //cirlce 2 connection
-                    x2, y2, Tcoords[2]};
+            //update coords for next triangle
+            x1 = x2;
+            y1 = y2;
+            angle += mAngle;     //increase the angle for each triangle
+        }
 
-            Cbody[x] = new Square(SqCoords);
+        x1 = radius;
+        y1 = 0.0f;
+        angle = mAngle;
+
+        for(int y=0; y < numsqT; y += 2) {
+
+            x2 = ((float) Math.cos(angle)) * radius;     //finds the next coords
+            y2 = ((float) Math.sin(angle)) * radius;
+
+            Tcoords = new float[]{
+                    x1, y1, 0.0f,       //center point
+                    x1, y1, z_offset,           //point 1
+                    x2, y2, z_offset            //point 2
+            };
+
+            Cbody[y] = new Triangle(Tcoords);
+
+            Tcoords = new float[]{
+                    x1, y1, 0.0f,
+                    x2, y2, 0.0f,           //point 1
+                    x2, y2, z_offset            //point 2
+            };
+
+            Cbody[y+1] = new Triangle(Tcoords);
 
             //update coords for next triangle
             x1 = x2;
@@ -71,9 +95,10 @@ public class Cylinder {
 
         for(int i=0; i < numT; i++)             //draw each triangle
         {
+            Circle2[i].draw(mMVPmatrix);
+            Cbody[i].draw(mMVPmatrix);
             Circle1[i].draw(mMVPmatrix);
-           // Circle2[i].draw(mMVPmatrix);
-            //Cbody[i].draw(mMVPmatrix);
+
         }
     }
 }
