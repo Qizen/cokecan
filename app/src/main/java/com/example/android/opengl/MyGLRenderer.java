@@ -57,7 +57,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     private float mX;
     private float mY;
 
-    private float[] colortop = {1.00f, 1.00f, 1.00f };
+    /*private float[] colortop = {1.00f, 1.00f, 1.00f };
     private float [] colormiddle = {1.000f, 0.271f, 0f};
 
     private float[] coordT = {
@@ -71,7 +71,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
             0.0f,  0.622008459f, 0.0f,   // top
             -0.3314f, -0.00119154f, 0.0f,   // bottom left
             0.3314f, -0.00119154f, 0.0f    // bottom right
-    };
+    };*/
 
     @Override
     public void onSurfaceCreated(GL10 unused, EGLConfig config) {
@@ -79,10 +79,10 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         // Set the background frame color
         GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
-        mTriangle = new Triangle();
+       /* mTriangle = new Triangle();
         mTrianglemiddle = new Triangle(coordM,colormiddle);
-        mTriangletop = new Triangle(coordT,colortop);
-        mSquare   = new Square();
+        mTriangletop = new Triangle(coordT,colortop);*/
+       // mSquare   = new Square();
         mCylinder = new Cylinder();
     }
 
