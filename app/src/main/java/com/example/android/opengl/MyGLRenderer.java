@@ -68,6 +68,8 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         mCylinder = new Cylinder();
 
         GLES20.glDisable(GLES20.GL_CULL_FACE);
+
+       // GLES20.glEnable(GLES20.GL_DEPTH_TEST);
     }
 
     @Override
@@ -86,7 +88,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         // Calculate the projection and view transformation
         Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mViewMatrix, 0);
 
-        mCylinder.draw(mTempMatrix);
+
 
         Matrix.setIdentityM(mModelMatrix, 0); // initialize to identity matrix
         Matrix.translateM(mModelMatrix, 0, 0f, 0f, 0); // translation to the left
@@ -109,6 +111,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         Matrix.multiplyMM(mTempMatrix, 0, mModelMatrix, 0, mAccumulatedRotation, 0);
         System.arraycopy(mTempMatrix, 0, mModelMatrix, 0, 16);
 
+        mCylinder.draw(mTempMatrix);
 
         GLES20.glDisable(GLES20.GL_CULL_FACE);
     }
