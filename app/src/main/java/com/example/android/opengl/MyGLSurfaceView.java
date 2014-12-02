@@ -49,30 +49,39 @@ public class MyGLSurfaceView extends GLSurfaceView {
 
     @Override
     public boolean onTouchEvent(MotionEvent e) {
-        // MotionEvent reports input details from the touch screen
-        // and other input controls. In this case, you are only
-        // interested in events where the touch position changed.
 
-        float x = e.getX();
-        float y = e.getY();
 
-        //Log.w("position",e.getRawX() + ", " + e.getRawY());
+        if(e != null) {
+            // MotionEvent reports input details from the touch screen
+            // and other input controls. In this case, you are only
+            // interested in events where the touch position changed.
 
-        switch (e.getAction()) {
-            case MotionEvent.ACTION_MOVE:
+            float x = e.getX();
+            float y = e.getY();
 
-                float dx = x - mPreviousX;
-                float dy = y - mPreviousY;
+            //Log.w("position",e.getRawX() + ", " + e.getRawY());
 
-                mRenderer.setX(mRenderer.getmX() - dx/1000);
-                mRenderer.setY(mRenderer.getmY() - dy/1000);
+            switch (e.getAction()) {
+                case MotionEvent.ACTION_MOVE:
 
-                requestRender();
+                    float dx = x - mPreviousX;
+                    float dy = y - mPreviousY;
+
+                    mRenderer.setX(mRenderer.getmX() - dx );
+                    mRenderer.setY(mRenderer.getmY() - dy );
+
+                    requestRender();
+            }
+
+            mPreviousX = x;
+            mPreviousY = y;
+            return true;
+        }
+        else
+        {
+            return super.onTouchEvent(e);
         }
 
-        mPreviousX = x;
-        mPreviousY = y;
-        return true;
     }
 
 }
