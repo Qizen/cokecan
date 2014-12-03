@@ -2,10 +2,10 @@
 <merger version="2" >
 
     <dataSet config="main" >
-        <source path="/users/ugrad/sopermaf/halloween/app/src/main/assets" />
+        <source path="C:\Users\Owner\Documents\GitHub\3D5proj\app\src\main\assets" />
     </dataSet>
     <dataSet config="debug" >
-        <source path="/users/ugrad/sopermaf/halloween/app/src/debug/assets" />
+        <source path="C:\Users\Owner\Documents\GitHub\3D5proj\app\src\debug\assets" />
     </dataSet>
 
 </merger>
