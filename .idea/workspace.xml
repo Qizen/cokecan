@@ -13,14 +13,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="919b9453-fa99-4699-83f5-dbbf68765c4e" name="Default" comment="">
-      <change type="DELETED" beforePath="C:\Users\Adam\Development\AndroidStudioProjects\3d-project\build\intermediates\model_data.bin" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/generated/source/buildConfig/debug/com/example/android/opengl/BuildConfig.java" afterPath="$PROJECT_DIR$/app/build/generated/source/buildConfig/debug/com/example/android/opengl/BuildConfig.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/generated/source/buildConfig/test/debug/com/example/android/opengl/test/BuildConfig.java" afterPath="$PROJECT_DIR$/app/build/generated/source/buildConfig/test/debug/com/example/android/opengl/test/BuildConfig.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/example/android/opengl/Cylinder.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/android/opengl/Cylinder.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/example/android/opengl/MyGLRenderer.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/android/opengl/MyGLRenderer.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/app.iml" afterPath="$PROJECT_DIR$/app/app.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/raw/fragmentshadersource" afterPath="$PROJECT_DIR$/app/src/main/res/raw/fragmentshadersource" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="OpenGLLightTexture.iws" />
@@ -1048,6 +1040,11 @@
       <created>1418320613657</created>
       <updated>1418320613657</updated>
     </task>
+    <task id="LOCAL-00001" summary="Almost there!&#10;&#10;Specular lighting not added yet though.">
+      <created>1418328035450</created>
+      <updated>1418328035450</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -1099,6 +1096,8 @@
     <option name="myTodoPanelSettings">
       <TodoPanelSettings />
     </option>
+    <MESSAGE value="Almost there!&#10;&#10;Specular lighting not added yet though." />
+    <option name="LAST_COMMIT_MESSAGE" value="Almost there!&#10;&#10;Specular lighting not added yet though." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
