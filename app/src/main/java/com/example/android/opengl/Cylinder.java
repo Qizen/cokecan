@@ -19,10 +19,11 @@ public class Cylinder {
     private float top_taper_dist = y_offset*1.2f;
     private float top_taper_ratio = 0.75f;
     private float taper_size = radius * bottom_taper_ratio;
-    private int taperNormalAngle;
+
+    private double bottomTaperNormalAngle = Math.atan(bottom_taper_dist/(radius*(1-bottom_taper_ratio)));
+    private double topTaperNormalAngle = Math.atan(top_taper_dist/(radius*(1-top_taper_ratio)));
 
     public Cylinder(){            //give the triangles that make circle their coordinates
-
         double angle = mAngle;  //use to increase the angle each time
         float Tcoords [];
         float normCoords[];
@@ -38,8 +39,8 @@ public class Cylinder {
         BottomTapeBody2 = new Triangle[numT];
         TopTapeBody1 = new Triangle[numT];
         TopTapeBody2 = new Triangle[numT];
-        float color[] = new float[] {1.0f, 0.0f, 0.0f, 1.0f};
-
+        float red[] = new float[] {1.0f, 0.0f, 0.0f, 1.0f};
+        float grey[] = new float[] {0.5f, 0.5f, 0.5f, 1.0f};
 
         z1 = radius;
         x1 = 0.0f;
@@ -125,6 +126,8 @@ public class Cylinder {
                     0.0f, -1*bottom_taper_dist, 0.0f,
                     x2, -1*bottom_taper_dist, z2
             };
+
+
             normCoords = new float[]{
                     0f, -1f, 0f,
                     0f, -1f, 0f,
@@ -132,11 +135,11 @@ public class Cylinder {
             };
 
             texCoords= new float[]{
-                    0.56f, 0.56f,
-                    0.56f, 0.56f,
-                    0.56f, 0.56f
+                    0.01f, 0.01f,
+                    0.01f, 0.01f,
+                    0.01f, 0.01f
             };
-            CircleT1[x] = new Triangle(Tcoords,color, normCoords, texCoords);
+            CircleT1[x] = new Triangle(Tcoords,grey, normCoords, texCoords);
 
             Tcoords = new float[]{
                     0.0f, top_taper_dist, 0.0f,
@@ -150,7 +153,7 @@ public class Cylinder {
             normCoords[4] = 1.0f;
             normCoords[7] = 1.0f;
 
-            CircleT2[x] = new Triangle(Tcoords,color, normCoords, texCoords);
+            CircleT2[x] = new Triangle(Tcoords,grey, normCoords, texCoords);
 
             Tcoords = new float[]{
                     x1/bottom_taper_ratio, -1*y_offset, z1/bottom_taper_ratio,
@@ -158,9 +161,13 @@ public class Cylinder {
                     x2, -1*bottom_taper_dist, z2,
             };
 
+            normCoords= new float[]{
+                    radius*(float)Math.sin(angle),-radius , radius*(float)Math.cos(angle),
+                    radius*(float)Math.sin(angle),-radius , radius*(float)Math.cos(angle),
+                    radius*(float)Math.sin(angle),-radius , radius*(float)Math.cos(angle)
+            };
 
-
-            BottomTapeBody1[x] = new Triangle(Tcoords,color);
+            BottomTapeBody1[x] = new Triangle(Tcoords,grey, normCoords, texCoords);
 
             Tcoords = new float[]{
                     x1/bottom_taper_ratio, -1*y_offset, z1/bottom_taper_ratio,
@@ -168,7 +175,8 @@ public class Cylinder {
                     x2/bottom_taper_ratio, -1*y_offset, z2/bottom_taper_ratio
             };
 
-            BottomTapeBody2[x] = new Triangle(Tcoords,color);
+
+            BottomTapeBody2[x] = new Triangle(Tcoords,grey, normCoords, texCoords);
 
             Tcoords = new float[]{
 
@@ -177,7 +185,14 @@ public class Cylinder {
                     x2, top_taper_dist, z2//point 2
             };
 
-            TopTapeBody1[x] = new Triangle(Tcoords);
+            normCoords= new float[]{
+                    radius*(float)Math.sin(angle),radius , radius*(float)Math.cos(angle),
+                    radius*(float)Math.sin(angle),radius , radius*(float)Math.cos(angle),
+                    radius*(float)Math.sin(angle),radius , radius*(float)Math.cos(angle)
+            };
+
+
+            TopTapeBody1[x] = new Triangle(Tcoords, red, normCoords, texCoords);
 
             Tcoords = new float[]{
                     x1/top_taper_ratio, y_offset, z1/top_taper_ratio,
@@ -186,7 +201,7 @@ public class Cylinder {
 
             };
 
-            TopTapeBody2[x] = new Triangle(Tcoords);
+            TopTapeBody2[x] = new Triangle(Tcoords, red, normCoords, texCoords);
 
 
             //update coords for next triangle

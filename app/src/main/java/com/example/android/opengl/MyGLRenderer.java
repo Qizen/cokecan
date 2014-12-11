@@ -227,7 +227,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         */
 
         Matrix.setIdentityM(mModelMatrix, 0);
-        //Matrix.translateM(mModelMatrix, 0, 0, 0, 1.0f);
+        Matrix.translateM(mModelMatrix, 0, 0, 0, -1.25f);
 
         //Matrix.rotateM(mModelMatrix, 0, angleInDegrees, 0.0f, 1.0f, 0.0f);
         Matrix.setIdentityM(mCurrentRotationX, 0);
@@ -245,7 +245,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         System.arraycopy(mTempMatrix, 0, mModelMatrix, 0, 16);
 
 
-        //Matrix.translateM(mModelMatrix, 0, 0.0f, -0.5f, 0.0f);
+
         //Matrix.rotateM(mModelMatrix, 0, 270, 1.0f, 0.0f, 0.0f);
         Matrix.multiplyMM(mMVMatrix, 0, mViewMatrix, 0, mModelMatrix, 0);
         //Matrix.translateM(mMVMatrix, 0, 0, 0, 1.0f);
