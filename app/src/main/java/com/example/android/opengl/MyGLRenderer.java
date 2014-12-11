@@ -29,6 +29,8 @@ import android.os.SystemClock;
 import android.provider.Settings;
 import android.util.Log;
 
+
+//test merge 11/12/14
 /**
  * Provides drawing instructions for a GLSurfaceView object. This class
  * must override the OpenGL ES drawing lifecycle methods:
@@ -63,6 +65,15 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     private float mAngle;
     private float mX;
     private float mY;
+    private float zoom = 1;
+
+    private float ratio;
+    private float left;
+    private float right;
+    private float bottom;
+    private float top;
+    private float near;
+    private float far;
 
     // Handles to shader programs and things needed by same
     public static int mShapeProgramHandle;
@@ -275,13 +286,13 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
         // this projection matrix is applied to object coordinates
         // in the onDrawFrame() method
-        final float ratio = (float) width/height;
-        final float left = -ratio;
-        final float right = ratio;
-        final float bottom = -1.0f;
-        final float top = 1.0f;
-        final float near = 1.0f;
-        final float far = 10.0f;
+        float ratio = (float) width/height;
+        left = -ratio;
+        right = ratio;
+        bottom = -1.0f;
+        top = 1.0f;
+        near = 1.0f;
+        far = 10.0f;
         Matrix.frustumM(mProjectionMatrix, 0, left, right, bottom, top, near, far);
 
     }
@@ -456,6 +467,13 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         return programHandle;
     }
 
+
+    public final void zoom(float multi)
+    {
+        zoom *= multi;
+        Matrix.frustumM(mProjectionMatrix, 0, zoom*left, zoom*right, zoom*bottom, zoom*top, near, far);
+
+    }
 
     private void drawLight() {
 

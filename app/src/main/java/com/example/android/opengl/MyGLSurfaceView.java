@@ -28,6 +28,8 @@ import android.view.MotionEvent;
 public class MyGLSurfaceView extends GLSurfaceView {
 
     public final MyGLRenderer mRenderer;
+    private float distance = 0;
+
 
     public MyGLSurfaceView(Context context) {
         super(context);
@@ -58,19 +60,36 @@ public class MyGLSurfaceView extends GLSurfaceView {
 
             float x = e.getX();
             float y = e.getY();
+            float newDist = 0;
 
             switch (e.getAction()) {
                 case MotionEvent.ACTION_MOVE:
 
-                    float dx = x - mPreviousX;
-                    float dy = y - mPreviousY;
+                    if (e.getPointerCount()==1) {
+                        float dx = x - mPreviousX;
+                        float dy = y - mPreviousY;
 
-                    mRenderer.setX(mRenderer.getmX() - dx );
-                    mRenderer.setY(mRenderer.getmY() - dy );
+                        mRenderer.setX(mRenderer.getmX() - dx);
+                        mRenderer.setY(mRenderer.getmY() - dy);
+                    }
 
+                    // pinch to zoom
+                    if (e.getPointerCount() == 2)
+                    {
+
+                        if (distance == 0)
+                        {
+                            distance = fingerDist(e);
+                        }
+                        newDist = fingerDist(e);
+                        float d = distance / newDist;
+                        mRenderer.zoom(d);
+                        distance = newDist;
+                    }
                     requestRender();
             }
 
+            distance = newDist;
             mPreviousX = x;
             mPreviousY = y;
             return true;
@@ -80,6 +99,12 @@ public class MyGLSurfaceView extends GLSurfaceView {
             return super.onTouchEvent(e);
         }
 
+    }
+    protected final float fingerDist(MotionEvent event)
+    {
+        float x = event.getX(0) - event.getX(1);
+        float y = event.getY(0) - event.getY(1);
+        return (float) Math.sqrt(x * x + y * y);
     }
 
 }
