@@ -27,7 +27,7 @@ import android.view.MotionEvent;
  */
 public class MyGLSurfaceView extends GLSurfaceView {
 
-    private final MyGLRenderer mRenderer;
+    public final MyGLRenderer mRenderer;
 
     public MyGLSurfaceView(Context context) {
         super(context);
@@ -36,7 +36,7 @@ public class MyGLSurfaceView extends GLSurfaceView {
         setEGLContextClientVersion(2);
 
         // Set the Renderer for drawing on the GLSurfaceView
-        mRenderer = new MyGLRenderer();
+        mRenderer = new MyGLRenderer(context);
         setRenderer(mRenderer);
 
         // Render the view only when there is a change in the drawing data

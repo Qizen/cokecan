@@ -16,12 +16,14 @@
 package com.example.android.opengl;
 
 import android.app.Activity;
+import android.content.Context;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 
 public class OpenGLES20Activity extends Activity {
 
-    private GLSurfaceView mGLView;
+    public GLSurfaceView mGLView;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -51,4 +53,6 @@ public class OpenGLES20Activity extends Activity {
         // this is a good place to re-allocate them.
         mGLView.onResume();
     }
+
+
 }
