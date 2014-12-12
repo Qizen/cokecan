@@ -184,7 +184,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         // Calculate position of the light. Rotate and then push into the distance.
         Matrix.setIdentityM(mLightModelMatrix, 0);
         //Matrix.translateM(mLightModelMatrix, 0, 0.0f, 0.0f, -5.0f);
-        Matrix.rotateM(mLightModelMatrix, 0, angleInDegrees, 0.0f, 1.0f, 0.0f);
+        Matrix.rotateM(mLightModelMatrix, 0, angleInDegrees, 1.0f, 1.0f, 0.0f);
         Matrix.translateM(mLightModelMatrix, 0, 0.0f, 0.0f, 2.0f);
         Matrix.multiplyMV(mLightPosInWorldSpace, 0, mLightModelMatrix, 0, mLightPosInModelSpace, 0);
         Matrix.multiplyMV(mLightPosInEyeSpace, 0, mViewMatrix, 0, mLightPosInWorldSpace, 0);
@@ -227,9 +227,9 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         */
 
         Matrix.setIdentityM(mModelMatrix, 0);
-        Matrix.translateM(mModelMatrix, 0, 0, 0, -1.25f);
+        //Matrix.translateM(mModelMatrix, 0, 0, 0, -1.25f);
 
-        //Matrix.rotateM(mModelMatrix, 0, angleInDegrees, 0.0f, 1.0f, 0.0f);
+        /*        // ROTATION INPUT
         Matrix.setIdentityM(mCurrentRotationX, 0);
         Matrix.setIdentityM(mCurrentRotationY, 0);
 
@@ -247,7 +247,42 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
 
         //Matrix.rotateM(mModelMatrix, 0, 270, 1.0f, 0.0f, 0.0f);
+        */
+        // ROTATION INPUT
+        Matrix.setIdentityM(mCurrentRotationX, 0);
+        Matrix.setIdentityM(mCurrentRotationY, 0);
+
+        Matrix.setRotateM(mCurrentRotationX, 0, mX, 0, -1f, 0f);
+        Matrix.setRotateM(mCurrentRotationY, 0, mY, 1.0f, 0, 0f);
+        Matrix.multiplyMM(mCurrentRotation, 0, mCurrentRotationX, 0, mCurrentRotationY, 0);
+        mX = 0.0f;
+        mY = 0.0f;
+
+        Matrix.multiplyMM(mTempMatrix, 0, mCurrentRotation, 0, mAccumulatedRotation, 0);
+        System.arraycopy(mTempMatrix, 0, mAccumulatedRotation, 0, 16);
+        Matrix.multiplyMM(mTempMatrix, 0, mViewMatrix, 0, mAccumulatedRotation, 0);
+        System.arraycopy(mTempMatrix, 0, mViewMatrix, 0, 16);
+        //ROTATE ENDS
+
+
         Matrix.multiplyMM(mMVMatrix, 0, mViewMatrix, 0, mModelMatrix, 0);
+
+        // ROTATION INPUT
+        Matrix.setIdentityM(mCurrentRotationX, 0);
+        Matrix.setIdentityM(mCurrentRotationY, 0);
+
+        Matrix.setRotateM(mCurrentRotationX, 0, mX, 0, -1f, 0f);
+        Matrix.setRotateM(mCurrentRotationY, 0, mY, 1.0f, 0, 0f);
+        Matrix.multiplyMM(mCurrentRotation, 0, mCurrentRotationX, 0, mCurrentRotationY, 0);
+        mX = 0.0f;
+        mY = 0.0f;
+
+        Matrix.multiplyMM(mTempMatrix, 0, mCurrentRotation, 0, mAccumulatedRotation, 0);
+        System.arraycopy(mTempMatrix, 0, mAccumulatedRotation, 0, 16);
+        Matrix.multiplyMM(mTempMatrix, 0, mMVMatrix, 0, mAccumulatedRotation, 0);
+        System.arraycopy(mTempMatrix, 0, mMVMatrix, 0, 16);
+        //ROTATE ENDS
+
         //Matrix.translateM(mMVMatrix, 0, 0, 0, 1.0f);
         Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mMVMatrix, 0);
 
