@@ -7,7 +7,7 @@ import android.util.Log;
  */
 public class Cylinder {
 
-    public final int numT = 20;          //defines number of triangles being drawn
+    public final int numT = 80;          //defines number of triangles being drawn
     //  Triangle Circle1 [], Circle2 [];
     Triangle CircleT1[],CircleT2[];
     Triangle  Cbody1[], Cbody2[], BottomTapeBody1[], BottomTapeBody2[], TopTapeBody1[], TopTapeBody2[];
@@ -19,9 +19,6 @@ public class Cylinder {
     private float top_taper_dist = y_offset*1.2f;
     private float top_taper_ratio = 0.75f;
     private float taper_size = radius * bottom_taper_ratio;
-
-    private double bottomTaperNormalAngle = Math.atan(bottom_taper_dist/(radius*(1-bottom_taper_ratio)));
-    private double topTaperNormalAngle = Math.atan(top_taper_dist/(radius*(1-top_taper_ratio)));
 
     public Cylinder(){            //give the triangles that make circle their coordinates
         double angle = mAngle;  //use to increase the angle each time
@@ -39,7 +36,7 @@ public class Cylinder {
         BottomTapeBody2 = new Triangle[numT];
         TopTapeBody1 = new Triangle[numT];
         TopTapeBody2 = new Triangle[numT];
-        float red[] = new float[] {1.0f, 0.0f, 0.0f, 1.0f};
+        float red[] = new float[] {0.682f, 0.0f, 0.004f, 1.0f};
         float grey[] = new float[] {0.5f, 0.5f, 0.5f, 1.0f};
 
         z1 = radius;
@@ -162,9 +159,9 @@ public class Cylinder {
             };
 
             normCoords= new float[]{
-                    radius*(float)Math.sin(angle),-radius , radius*(float)Math.cos(angle),
-                    radius*(float)Math.sin(angle),-radius , radius*(float)Math.cos(angle),
-                    radius*(float)Math.sin(angle),-radius , radius*(float)Math.cos(angle)
+                    radius*(float)Math.sin(angle-mAngle),          -radius,    radius*(float)Math.cos(angle-mAngle),
+                    radius*(float)Math.sin(angle-mAngle),          -radius,    radius*(float)Math.cos(angle-mAngle),
+                    radius*(float)Math.sin(angle),                 -radius,    radius*(float)Math.cos(angle)
             };
 
             BottomTapeBody1[x] = new Triangle(Tcoords,grey, normCoords, texCoords);
@@ -175,6 +172,8 @@ public class Cylinder {
                     x2/bottom_taper_ratio, -1*y_offset, z2/bottom_taper_ratio
             };
 
+            normCoords[3] = radius*(float)Math.sin(angle);
+            normCoords[5] = radius* (float)Math.cos(angle);
 
             BottomTapeBody2[x] = new Triangle(Tcoords,grey, normCoords, texCoords);
 
@@ -186,9 +185,9 @@ public class Cylinder {
             };
 
             normCoords= new float[]{
-                    radius*(float)Math.sin(angle),radius , radius*(float)Math.cos(angle),
-                    radius*(float)Math.sin(angle),radius , radius*(float)Math.cos(angle),
-                    radius*(float)Math.sin(angle),radius , radius*(float)Math.cos(angle)
+                    radius*(float)Math.sin(angle-mAngle),          radius,     radius*(float)Math.cos(angle-mAngle),
+                    radius*(float)Math.sin(angle-mAngle),          radius,     radius*(float)Math.cos(angle-mAngle),
+                    radius*(float)Math.sin(angle),   radius,     radius*(float)Math.cos(angle)
             };
 
 
@@ -200,6 +199,9 @@ public class Cylinder {
                     x2, top_taper_dist, z2,
 
             };
+
+            normCoords[3] = radius*(float)Math.sin(angle);
+            normCoords[5] = radius* (float)Math.cos(angle);
 
             TopTapeBody2[x] = new Triangle(Tcoords, red, normCoords, texCoords);
 

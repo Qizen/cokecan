@@ -3,46 +3,48 @@ precision mediump float;        // Set the default precision to medium. We don't
 uniform vec3 u_LightPos;        // The position of the light in eye space.
 uniform sampler2D u_Texture;    // The input texture.
 
+
 varying vec3 v_Position;        // Interpolated position for this fragment.
 varying vec4 v_Color;           // This is the color from the vertex shader interpolated across the
+varying vec4 v_FragPosition;
+varying vec4 v_eyePos;
                                 // triangle per fragment.
 varying vec3 v_Normal;          // Interpolated normal for this fragment.
 varying vec2 v_TexCoordinate;   // Interpolated texture coordinate per fragment.
+varying mat4 v_ViewMatrix;
+
+const vec4 light_specular = vec4(1.0, 1.0, 1.0, 1.0);
 
 // The entry point for our fragment shader.
 void main()
 {
+
+    vec4 eyePos = vec4((inverse(v_ViewMatrix)*vec4(0.0,0.0,0.0,1.0)));
     // Will be used for attenuation.
     float distance = length(u_LightPos - v_Position);
 
     // Get a lighting direction vector from the light to the vertex.
     vec3 lightVector = normalize(u_LightPos - v_Position);
+    vec3 eyeVector = normalize(vec3(eyePos));
+    vec3 reflectedVector = reflect(lightVector, v_Normal);
+    vec4 specular = (max(pow(dot(reflectedVector, eyeVector), 20.0)*1.0, 0.0)*
+                   light_specular);
 
     // Calculate the dot product of the light vector and vertex normal. If the normal and light vector are
     // pointing in the same direction then it will get max illumination.
     float diffuse = max(dot(v_Normal, lightVector), 0.0);
-    /*
-    playing around with lighting effects
-    if(diffuse<0.9){
-        diffuse = diffuse*0.5;
-    }
-    */
 
     // Add attenuation.
-    diffuse = diffuse * (1.0 / (1.0 + (0.10 * distance)));
+    diffuse = diffuse * (1.0 / (1.0 + (0.20 * distance)));
 
     // Add ambient lighting
     diffuse = diffuse + 0.5;
-    //TODO REPLACE VALUE OF 0.3 HERE FOR AMBIENT LIGHTING
+    //REPLACE VALUE OF 0.3 HERE FOR AMBIENT LIGHTING
 
     // Multiply the color by the diffuse illumination level and texture value to get final output color.
+    // Add the specular term to get highlights
 
-    vec4 finalColor = (v_Color * diffuse * texture2D(u_Texture, v_TexCoordinate));
+    gl_FragColor = (v_Color * diffuse * texture2D(u_Texture, v_TexCoordinate)+specular);
 
-    //gl_FragColor = v_Color;
-    gl_FragColor = (v_Color * diffuse * texture2D(u_Texture, v_TexCoordinate));
-
-    //gl_FragColor = (diffuse * texture2D(u_Texture, v_TexCoordinate));
-    //gl_FragColor = v_Color;
 
   }
