@@ -55,6 +55,11 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     public final float[] mCurrentRotationX = new float[16];
     public final float[] mCurrentRotationY = new float[16];
     public final float[] mAccumulatedRotation = new float[16];
+    public final int cameraMode =0;
+    /*
+        0 -- model rotation
+        1 -- camera rotation
+    */
     // create a temporary matrix for calculation purposes,
 // to avoid the same matrix on the right and left side of multiplyMM later
 // see http://stackoverflow.com/questions/13480043/opengl-es-android-matrix-transformations#comment18443759_13480364
@@ -73,6 +78,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     public static int mNormalHandle;
     public static int mLightPosHandle;
     public static int mMVMatrixHandle;
+    public static int mViewMatrixHandle;
 
     // Lighting position matrices
     public static float[] mLightPosInModelSpace = new float[]{0.0f, 0.0f, 0.0f, 1.0f};
@@ -157,6 +163,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         // Set our per-vertex lighting program.
         GLES20.glUseProgram(mShapeProgramHandle);
 // Set program handles for cube drawing.
+        mViewMatrixHandle = GLES20.glGetUniformLocation(mShapeProgramHandle, "u_ViewMatrix");
         mMVPMatrixHandle = GLES20.glGetUniformLocation(mShapeProgramHandle, "u_MVPMatrix");
         mMVMatrixHandle = GLES20.glGetUniformLocation(mShapeProgramHandle, "u_MVMatrix");
         mLightPosHandle = GLES20.glGetUniformLocation(mShapeProgramHandle, "u_LightPos");
@@ -165,6 +172,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         mColorHandle = GLES20.glGetAttribLocation(mShapeProgramHandle, "a_Color");
         mNormalHandle = GLES20.glGetAttribLocation(mShapeProgramHandle, "a_Normal");
         mTextureCoordinateHandle = GLES20.glGetAttribLocation(mShapeProgramHandle, "a_TexCoordinate");
+
 
         //GLES20.glUniform4fv(mColorHandle, 1, new float[]{1.0f,1.0f,1.0f,1.0f}, 0);
         //checkGlError("glUniform4fv");
@@ -178,114 +186,66 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         //tell the tex uniform sampler to use this texture by binding it to 0
         int i = 0;
         GLES20.glUniform1i(mTextureUniformHandle, i);
-        Matrix.setLookAtM(mViewMatrix, 0, 0, 0, -3f, 0f, 0f, 0f, 0f, 1.0f, 0.0f);
-        //Matrix.setLookAtM(rm, rmOffset, eyex, eyey, eyez, centerx, centery, centerz, upx, upy, upz);
+        Matrix.setLookAtM(mViewMatrix,  0,          0,      0,    -2f, 0f, 0f, 0f, 0f, 1.0f, 0.0f);
+        //Matrix.setLookAtM(rm,         rmOffset,   eyex,   eyey, eyez, centerx, centery, centerz, upx, upy, upz);
+        if(cameraMode==1) {
+            // ROTATION INPUT -- for rotating camera position
+            Matrix.setIdentityM(mCurrentRotationX, 0);
+            Matrix.setIdentityM(mCurrentRotationY, 0);
+
+            Matrix.setRotateM(mCurrentRotationX, 0, mX, 0, -1f, 0f);
+            Matrix.setRotateM(mCurrentRotationY, 0, mY, 1.0f, 0, 0f);
+            Matrix.multiplyMM(mCurrentRotation, 0, mCurrentRotationX, 0, mCurrentRotationY, 0);
+            mX = 0.0f;
+            mY = 0.0f;
+
+            Matrix.multiplyMM(mTempMatrix, 0, mCurrentRotation, 0, mAccumulatedRotation, 0);
+            System.arraycopy(mTempMatrix, 0, mAccumulatedRotation, 0, 16);
+            Matrix.multiplyMM(mTempMatrix, 0, mViewMatrix, 0, mAccumulatedRotation, 0);
+            System.arraycopy(mTempMatrix, 0, mViewMatrix, 0, 16);
+            //ROTATE ENDS
+        }
 
         // Calculate position of the light. Rotate and then push into the distance.
         Matrix.setIdentityM(mLightModelMatrix, 0);
         //Matrix.translateM(mLightModelMatrix, 0, 0.0f, 0.0f, -5.0f);
-        Matrix.rotateM(mLightModelMatrix, 0, angleInDegrees, 1.0f, 1.0f, 0.0f);
+        Matrix.rotateM(mLightModelMatrix, 0, angleInDegrees, 0.0f, 1.0f, 0.0f);
         Matrix.translateM(mLightModelMatrix, 0, 0.0f, 0.0f, 2.0f);
         Matrix.multiplyMV(mLightPosInWorldSpace, 0, mLightModelMatrix, 0, mLightPosInModelSpace, 0);
         Matrix.multiplyMV(mLightPosInEyeSpace, 0, mViewMatrix, 0, mLightPosInWorldSpace, 0);
 
-
-        // Set the camera position (View matrix)
-
-        // TODO Uncomment this stuff at some point
-        // Calculate the projection and view transformation
-        /*Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mViewMatrix, 0);
-
-
-        Matrix.setIdentityM(mModelMatrix, 0); // initialize to identity matrix
-        Matrix.translateM(mModelMatrix, 0, 0f, 0f, 0); // translation to the left
-        Matrix.multiplyMM(mMVMatrix, 0, mViewMatrix, 0, mModelMatrix, 0);
-        //pass in the modelview matrix (to the shader program)
-        GLES20.glUniformMatrix4fv(mMVMatrixHandle, 1, false, mMVMatrix, 0);
-
-        Matrix.setIdentityM(mCurrentRotationX, 0);
-        Matrix.setIdentityM(mCurrentRotationY, 0);
-
-        Matrix.setRotateM(mCurrentRotationX, 0, mX, 0, 1f, 0f);
-        Matrix.setRotateM(mCurrentRotationY, 0, mY, 1.0f, 0, 0f);
-
-        mX = 0.0f;
-        mY = 0.0f;
-
-        Matrix.multiplyMM(mCurrentRotation, 0, mCurrentRotationX, 0, mCurrentRotationY, 0);
-
-        Matrix.multiplyMM(mTempMatrix, 0, mCurrentRotation, 0, mAccumulatedRotation, 0);
-        System.arraycopy(mTempMatrix, 0, mAccumulatedRotation, 0, 16);
-
-        // Rotate the cube taking the overall rotation into account.
-        Matrix.multiplyMM(mTempMatrix, 0, mModelMatrix, 0, mAccumulatedRotation, 0);
-        System.arraycopy(mTempMatrix, 0, mModelMatrix, 0, 16);
-        // Pass in the MVPMatrix
-        GLES20.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, mTempMatrix, 0);
-        // Pass in the Light Position
-        GLES20.glUniform3f(mLightPosHandle, mLightPosInEyeSpace[0], mLightPosInEyeSpace[1], mLightPosInEyeSpace[2]);
-        */
-
+        //Coke Can Stuff
         Matrix.setIdentityM(mModelMatrix, 0);
         //Matrix.translateM(mModelMatrix, 0, 0, 0, -1.25f);
 
-        /*        // ROTATION INPUT
-        Matrix.setIdentityM(mCurrentRotationX, 0);
-        Matrix.setIdentityM(mCurrentRotationY, 0);
+        if(cameraMode==0) {
+            // ROTATION INPUT -- model
+            Matrix.setIdentityM(mCurrentRotationX, 0);
+            Matrix.setIdentityM(mCurrentRotationY, 0);
 
-        Matrix.setRotateM(mCurrentRotationX, 0, mX, 0, -1f, 0f);
-        Matrix.setRotateM(mCurrentRotationY, 0, mY, 1.0f, 0, 0f);
-        Matrix.multiplyMM(mCurrentRotation, 0, mCurrentRotationX, 0, mCurrentRotationY, 0);
-        mX = 0.0f;
-        mY = 0.0f;
+            Matrix.setRotateM(mCurrentRotationX, 0, mX, 0, -1f, 0f);
+            Matrix.setRotateM(mCurrentRotationY, 0, mY, 1.0f, 0, 0f);
+            Matrix.multiplyMM(mCurrentRotation, 0, mCurrentRotationX, 0, mCurrentRotationY, 0);
+            mX = 0.0f;
+            mY = 0.0f;
 
-        Matrix.multiplyMM(mTempMatrix, 0, mCurrentRotation, 0, mAccumulatedRotation, 0);
-        System.arraycopy(mTempMatrix, 0, mAccumulatedRotation, 0, 16);
-        Matrix.multiplyMM(mTempMatrix, 0, mModelMatrix, 0, mAccumulatedRotation, 0);
-        System.arraycopy(mTempMatrix, 0, mModelMatrix, 0, 16);
+            Matrix.multiplyMM(mTempMatrix, 0, mCurrentRotation, 0, mAccumulatedRotation, 0);
+            System.arraycopy(mTempMatrix, 0, mAccumulatedRotation, 0, 16);
+            Matrix.multiplyMM(mTempMatrix, 0, mModelMatrix, 0, mAccumulatedRotation, 0);
+            System.arraycopy(mTempMatrix, 0, mModelMatrix, 0, 16);
 
-
+        }
 
         //Matrix.rotateM(mModelMatrix, 0, 270, 1.0f, 0.0f, 0.0f);
-        */
-        // ROTATION INPUT
-        Matrix.setIdentityM(mCurrentRotationX, 0);
-        Matrix.setIdentityM(mCurrentRotationY, 0);
-
-        Matrix.setRotateM(mCurrentRotationX, 0, mX, 0, -1f, 0f);
-        Matrix.setRotateM(mCurrentRotationY, 0, mY, 1.0f, 0, 0f);
-        Matrix.multiplyMM(mCurrentRotation, 0, mCurrentRotationX, 0, mCurrentRotationY, 0);
-        mX = 0.0f;
-        mY = 0.0f;
-
-        Matrix.multiplyMM(mTempMatrix, 0, mCurrentRotation, 0, mAccumulatedRotation, 0);
-        System.arraycopy(mTempMatrix, 0, mAccumulatedRotation, 0, 16);
-        Matrix.multiplyMM(mTempMatrix, 0, mViewMatrix, 0, mAccumulatedRotation, 0);
-        System.arraycopy(mTempMatrix, 0, mViewMatrix, 0, 16);
-        //ROTATE ENDS
 
 
         Matrix.multiplyMM(mMVMatrix, 0, mViewMatrix, 0, mModelMatrix, 0);
-
-        // ROTATION INPUT
-        Matrix.setIdentityM(mCurrentRotationX, 0);
-        Matrix.setIdentityM(mCurrentRotationY, 0);
-
-        Matrix.setRotateM(mCurrentRotationX, 0, mX, 0, -1f, 0f);
-        Matrix.setRotateM(mCurrentRotationY, 0, mY, 1.0f, 0, 0f);
-        Matrix.multiplyMM(mCurrentRotation, 0, mCurrentRotationX, 0, mCurrentRotationY, 0);
-        mX = 0.0f;
-        mY = 0.0f;
-
-        Matrix.multiplyMM(mTempMatrix, 0, mCurrentRotation, 0, mAccumulatedRotation, 0);
-        System.arraycopy(mTempMatrix, 0, mAccumulatedRotation, 0, 16);
-        Matrix.multiplyMM(mTempMatrix, 0, mMVMatrix, 0, mAccumulatedRotation, 0);
-        System.arraycopy(mTempMatrix, 0, mMVMatrix, 0, 16);
-        //ROTATE ENDS
 
         //Matrix.translateM(mMVMatrix, 0, 0, 0, 1.0f);
         Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mMVMatrix, 0);
 
+        //pass int the view matrix to shader
+        GLES20.glUniformMatrix4fv(mViewMatrixHandle, 1, false, mViewMatrix, 0);
         //pass in the modelview matrix (to the shader program)
         GLES20.glUniformMatrix4fv(mMVMatrixHandle, 1, false, mMVMatrix, 0);
         // Pass in the MVPMatrix
