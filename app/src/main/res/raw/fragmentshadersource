@@ -38,17 +38,13 @@ void main()
     diffuse = diffuse * (1.0 / (1.0 + (0.20 * distance)));
 
     // Add ambient lighting
-    diffuse = diffuse + 0.3;
-    //TODO REPLACE VALUE OF 0.3 HERE FOR AMBIENT LIGHTING
+    diffuse = diffuse + 0.5;
+    //REPLACE VALUE OF 0.3 HERE FOR AMBIENT LIGHTING
 
     // Multiply the color by the diffuse illumination level and texture value to get final output color.
+    // Add the specular term to get highlights
 
-    //vec4 finalColor = (v_Color * diffuse * texture2D(u_Texture, v_TexCoordinate));
+    gl_FragColor = (v_Color * diffuse * texture2D(u_Texture, v_TexCoordinate)+specular);
 
-    //gl_FragColor = v_Color;
-    gl_FragColor = (v_Color * (diffuse) * texture2D(u_Texture, v_TexCoordinate)+specular);
-    //gl_FragColor = gl_FragColor + specular
-    //gl_FragColor = (diffuse * texture2D(u_Texture, v_TexCoordinate));
-    //gl_FragColor = v_Color;
 
   }

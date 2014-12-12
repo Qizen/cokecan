@@ -20,9 +20,6 @@ public class Cylinder {
     private float top_taper_ratio = 0.75f;
     private float taper_size = radius * bottom_taper_ratio;
 
-    private double bottomTaperNormalAngle = Math.atan(bottom_taper_dist/(radius*(1-bottom_taper_ratio)));
-    private double topTaperNormalAngle = Math.atan(top_taper_dist/(radius*(1-top_taper_ratio)));
-
     public Cylinder(){            //give the triangles that make circle their coordinates
         double angle = mAngle;  //use to increase the angle each time
         float Tcoords [];
@@ -164,7 +161,7 @@ public class Cylinder {
             normCoords= new float[]{
                     radius*(float)Math.sin(angle-mAngle),          -radius,    radius*(float)Math.cos(angle-mAngle),
                     radius*(float)Math.sin(angle-mAngle),          -radius,    radius*(float)Math.cos(angle-mAngle),
-                    radius*(float)Math.sin(angle),   -radius,    radius*(float)Math.cos(angle)
+                    radius*(float)Math.sin(angle),                 -radius,    radius*(float)Math.cos(angle)
             };
 
             BottomTapeBody1[x] = new Triangle(Tcoords,grey, normCoords, texCoords);
